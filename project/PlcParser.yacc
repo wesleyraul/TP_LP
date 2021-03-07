@@ -22,13 +22,13 @@
 %nonterm Prog of expr
     | Decl of string * expr
     | Expr of expr
-    | AtomExpr of expr * expr
+    | AtomExpr of expr
     | AppExpr of expr
     | Const of expr
     | Comps of expr
     | MatchExpr of expr
     | CondExpr of expr
-    | Args of plcType
+    | Args of plcType * string
     | Params of plcType
     | TypedVar of plcType * string
     | Type of plcType
@@ -50,11 +50,11 @@
 %%
 
 Prog : Expr (Expr) 
-    | Decl SEMIC Prog (Let(Decl, Prog))
+    | Decl SEMIC Prog (Let(#1 Decl, #2 Decl, Prog))
 
-Decl : VAR NAME EQ Expr (NAME, Expr)
-    | FUN NAME Args EQ Expr (NAME, Anon(Args, Expr))
-    | FUN REC NAME Args COLON Type EQ Expr (MakeFun()) ##
+Decl : VAR NAME EQ Expr ((NAME, Expr))
+    | FUN NAME Args EQ Expr ((NAME, Anon(Args, Expr)))
+    | FUN REC NAME Args COLON Type EQ Expr ((NAME, MakeFun())) ##
 
 Expr : AtomExpr (AtomExpr)
     | AppExpr (AppExpr)
@@ -103,17 +103,17 @@ MatchExpr : END () #
 CondExpr : Expr (SOME (Expr)) #
     | UNDER (NONE)
 
-Args : LPAR RPAR (ListT [], "()") #
+Args : LPAR RPAR ((ListT [], "()")) #
     | LPAR Params RPAR (Params) #
 
-Params : TypedVar (TypedVar)
+Params : TypedVar ((#1 TypedVar, #2 TypedVar))
     | TypedVar COMMA Params (TypedVar, Params) #
 
-TypedVar : Type NAME (Type, NAME) #
+TypedVar : Type NAME ((Type, NAME)) #
 
 Type : AtomType (AtomType)
     | LPAR Types RPAR (Types) #
-    | LBRACK Type RBRACK (SeqT (Type)) #
+    | LBRACK Type RBRACK (SeqT Type) #
     | Type ARROW Type (FunT(Type1, Type2)) #
 
 AtomType : NIL (ListT [])

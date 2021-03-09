@@ -16,6 +16,7 @@
     | RPAR | LPAR | RBRACK | LBRACK | RBRACE | LBRACE
     | BAR | UNDER
     | NIL | BOOL | INT
+    | TRUE | FALSE
     | NAME of string | NAT of int
     | EOF
 

@@ -67,7 +67,7 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 {identifier} => (keyword(yytext, yypos, yypos));
 
 
-"!" => (NOT(yypos, yypos));
+"!" => (NOT(yypos));
 "&&"=> (AND(yypos, yypos));
 "+" => (PLUS(yypos, yypos));
 "-" => (MINUS(yypos, yypos));

@@ -10,26 +10,26 @@ type lexresult = (slvalue, pos)token
 
 fun keyword (s, lpos, rpos) =
     case s of
-        "var" => Var(lpos,rpos)
-        | "bool" => Bool(lpos,rpos)
-        | "else" => Else (lpos,rpos)
-        | "end" => End(lpos,rpos)
-        | "false" => false(lpos,rpos)
-        | "fn" => Fn(lpos,rpos)
-        | "fun" => Fun(lpos,rpos)
-        | "hd" => Hd(lpos,rpos)
-        | "if" => If(lpos,rpos)
-        | "int" => Int(lpos,rpos)
-        | "ise" => Ise(lpos,rpos)
-        | "match" => Match(lpos,rpos)
-        | "nil" => Nil(lpos,rpos)
-        | "print" => Print(lpos,rpos)
-        | "rec" => Rec(lpos,rpos)
-        | "then" => Then(lpos,rpos)
-        | "tl" => Tl(lpos,rpos)
-        | "true" => True(lpos,rpos)
-        | "with" => Whith(lpos,rpos)
-        | _   => Name (s, lpos, rpos)
+        "var" => VAR(lpos,rpos)
+        | "bool" => BOOL(lpos,rpos)
+        | "else" => ELSE (lpos,rpos)
+        | "end" => END(lpos,rpos)
+        | "false" => FALSE(lpos,rpos)
+        | "fn" => FN(lpos,rpos)
+        | "fun" => FUN(lpos,rpos)
+        | "hd" => HD(lpos,rpos)
+        | "if" => IF(lpos,rpos)
+        | "int" => INT(lpos,rpos)
+        | "ise" => ISE(lpos,rpos)
+        | "match" => MATCH(lpos,rpos)
+        | "nil" => NIL(lpos,rpos)
+        | "print" => PRINT(lpos,rpos)
+        | "rec" => REC(lpos,rpos)
+        | "then" => THEN(lpos,rpos)
+        | "tl" => TL(lpos,rpos)
+        | "true" => TRUE(lpos,rpos)
+        | "with" => WITH(lpos,rpos)
+        | _   => NAME (s, lpos, rpos)
 
 (* A function to print a message error on the screen. *)
 val error = fn x => TextIO.output(TextIO.stdOut, x ^ "\n")
@@ -63,11 +63,11 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 %%
 \n => (lineNumber := !lineNumber+1; lex());
 {whitespace}+ => (lex());
-{digit}+ => (CINT (strToInt(yytext), yypos, yypos));
+{digit}+ => (NAT (strToInt(yytext), yypos, yypos));
 {identifier} => (keyword(yytext, yypos, yypos));
 
 
-"!" => (NOT(yypos));
+"!" => (NOT(yypos, yypos));
 "&&"=> (AND(yypos, yypos));
 "+" => (PLUS(yypos, yypos));
 "-" => (MINUS(yypos, yypos));
@@ -87,26 +87,24 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "tl" => (TL(yypos, yypos));
 "ise" => (ISE(yypos, yypos));
 "print" => (PRINT(yypos, yypos));
-"lbrack" => (LBRACK(yypos, yypos));
-"rbrack" => (RBRACK(yypos, yypos));
+"[" => (LBRACK(yypos, yypos));
+"]" => (RBRACK(yypos, yypos));
 
-
+"end" =>END(yypos,yypos);
 "var" => (VAR(yypos, yypos));
-"name" => (NAME(yypos, yypos));
 "rec" => (REC(yypos, yypos));
 
-
-"lbrace" => (LBRACE(yypos, yypos));
-"rbrace" => (RBRACE(yypos, yypos));
-"lpar"=> (LPAR(yypos, yypos));
-"rpar" => (RPAR(yypos, yypos));
+"," => (COMMA(yypos, yypos));
+"{" => (LBRACE(yypos, yypos));
+"}" => (RBRACE(yypos, yypos));
+"("=> (LPAR(yypos, yypos));
+")" => (RPAR(yypos, yypos));
 "fn" => (FN(yypos, yypos));
 
 
 
 "true" => (TRUE(yypos, yypos));
 "false" => (FALSE(yypos, yypos));
-"nat" => (NAT(yypos, yypos));
 "eqarrow" => (EQARROW(yypos, yypos));
 
 

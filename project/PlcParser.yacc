@@ -95,7 +95,7 @@ Const : TRUE (ConB(TRUE)) | FALSE (ConB(FALSE))
     | LPAR RPAR (List [])
     | LPAR Type LBRACK RBRACK RPAR (ESeq(Type))
 
-Comps : Expr COMMA Expr (Expr1 :: Expr2 :: []])
+Comps : Expr COMMA Expr (Expr1 :: Expr2 :: [])
     | Expr COMMA Comps (Expr :: Comps)
 
 MatchExpr : END ([])

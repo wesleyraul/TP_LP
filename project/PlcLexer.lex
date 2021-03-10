@@ -11,7 +11,7 @@ type lexresult = (slvalue, pos)token
 fun keyword (s, lpos, rpos) =
     case s of
         "var" => Var(lpos,rpos)
-        | "Bool" => Bool(lpos,rpos)
+        | "bool" => Bool(lpos,rpos)
         | "else" => Else (lpos,rpos)
         | "end" => End(lpos,rpos)
         | "false" => false(lpos,rpos)
@@ -19,10 +19,10 @@ fun keyword (s, lpos, rpos) =
         | "fun" => Fun(lpos,rpos)
         | "hd" => Hd(lpos,rpos)
         | "if" => If(lpos,rpos)
-        | "Int" => Int(lpos,rpos)
+        | "int" => Int(lpos,rpos)
         | "ise" => Ise(lpos,rpos)
         | "match" => Match(lpos,rpos)
-        | "Nil" => Nil(lpos,rpos)
+        | "nil" => Nil(lpos,rpos)
         | "print" => Print(lpos,rpos)
         | "rec" => Rec(lpos,rpos)
         | "then" => Then(lpos,rpos)
@@ -66,7 +66,8 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 {digit}+ => (CINT (strToInt(yytext), yypos, yypos));
 {identifier} => (keyword(yytext, yypos, yypos));
 
-"!" => (NOT(yypos))
+
+"!" => (NOT(yypos, yypos));
 "&&"=> (AND(yypos, yypos));
 "+" => (PLUS(yypos, yypos));
 "-" => (MINUS(yypos, yypos));
@@ -78,6 +79,35 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "<=" => (LEQ(yypos,yypos));
 "::" => (CONS(yypos,yypos));
 ";" => (SEMIC(yypos, yypos));
+"then" =>(THEN(yypos, yypos));
+"else" => (ELSE(yypos, yypos));
+"if" => (IF(yypos, yypos));
+"match" => (MATCH(yypos, yypos));
+"hd" => (HD(yypos, yypos));
+"tl" => (TL(yypos, yypos));
+"ise" => (ISE(yypos, yypos));
+"print" => (PRINT(yypos, yypos));
+"lbrack" => (LBRACK(yypos, yypos));
+"rbrack" => (RBRACK(yypos, yypos));
 
 
-. =>(error("\n***Lexer erro: bad character *** \n"); raise Fail ("Lexer erro: bad character" ^yytext));
+"var" => (VAR(yypos, yypos));
+"name" => (NAME(yypos, yypos));
+"rec" => (REC(yypos, yypos));
+
+
+"lbrace" => (LBRACE(yypos, yypos));
+"rbrace" => (RBRACE(yypos, yypos));
+"lpar"=> (LPAR(yypos, yypos));
+"rpar" => (RPAR(yypos, yypos));
+"fn" => (FN(yypos, yypos));
+
+
+
+"true" => (TRUE(yypos, yypos));
+"false" => (FALSE(yypos, yypos));
+"nat" => (NAT(yypos, yypos));
+"eqarrow" => (EQARROW(yypos, yypos));
+
+
+. =>(error("\n***Lexer erro: bad character *** \n"); raise Fail ("Lexer erro: bad character" ^ yytext));

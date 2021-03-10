@@ -90,7 +90,7 @@ AtomExpr : Const (Const)
 AppExpr : AtomExpr AtomExpr (Call(AtomExpr1, AtomExpr2))
     | AppExpr AtomExpr (Call(AppExpr, AtomExpr))
 
-Const : TRUE (ConB(TRUE)) | FALSE (ConB(FALSE)) 
+Const : TRUE (ConB(true)) | FALSE (ConB(false)) 
     | NAT (ConI(NAT))
     | LPAR RPAR (List [])
     | LPAR Type LBRACK RBRACK RPAR (ESeq(Type))

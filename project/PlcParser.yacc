@@ -36,11 +36,17 @@
     | AtomType of plcType
     | Types of plcType list
 
-%right SEMIC ARROW CONS
-
-%left ELSE AND EQ DIF LT LEQ PLUS MINUS TIMES DIV LBRACK
-
-%nonassoc IF NOT HD TL ISE PRINT NAME
+%right SEMIC ARROW
+%nonassoc IF
+%left ELSE
+%left AND 
+%left EQ DIF 
+%left LT LEQ
+%right CONS
+%left PLUS MINUS 
+%left TIMES DIV
+%nonassoc NOT HD TL ISE PRINT NAME
+%left LBRACK
 
 %eop EOF
 

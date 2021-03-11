@@ -108,4 +108,4 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "eqarrow" => (EQARROW(yypos, yypos));
 
 
-. =>(error("\n***Lexer erro: bad character *** \n")); raise Fail ("Lexer erro: bad character" ^ yytext));
+. =>(error("\n***Lexer erro: bad character *** \n")); raise Fail (("Lexer erro: bad character" ^ yytext));

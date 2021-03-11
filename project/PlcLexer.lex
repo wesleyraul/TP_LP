@@ -90,7 +90,7 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "[" => (LBRACK(yypos, yypos));
 "]" => (RBRACK(yypos, yypos));
 
-"end" =>END(yypos,yypos);
+"end" => (END(yypos,yypos));
 "var" => (VAR(yypos, yypos));
 "rec" => (REC(yypos, yypos));
 

@@ -29,6 +29,7 @@ fun keyword (s, lpos, rpos) =
         | "tl" => TL(lpos,rpos)
         | "true" => TRUE(lpos,rpos)
         | "with" => WITH(lpos,rpos)
+        | "_" => UNDER(lpos, rpos)
         | _   => NAME (s, lpos, rpos)
 
 (* A function to print a message error on the screen. *)
@@ -79,31 +80,16 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "<=" => (LEQ(yypos,yypos));
 "::" => (CONS(yypos,yypos));
 ";" => (SEMIC(yypos, yypos));
-"then" =>(THEN(yypos, yypos));
-"else" => (ELSE(yypos, yypos));
-"if" => (IF(yypos, yypos));
-"match" => (MATCH(yypos, yypos));
-"ise" => (ISE(yypos, yypos));
-"print" => (PRINT(yypos, yypos));
 "[" => (LBRACK(yypos, yypos));
 "]" => (RBRACK(yypos, yypos));
-
-"end" => (END(yypos,yypos));
-
 "," => (COMMA(yypos, yypos));
 "{" => (LBRACE(yypos, yypos));
 "}" => (RBRACE(yypos, yypos));
 "("=> (LPAR(yypos, yypos));
 ")" => (RPAR(yypos, yypos));
-"fn" => (FN(yypos, yypos));
 "|" => (BAR(yypos, yypos));
-"_" => (UNDER(yypos, yypos));
-
-
-
-"true" => (TRUE(yypos, yypos));
-"false" => (FALSE(yypos, yypos));
 "=>" => (EQARROW(yypos, yypos));
 "->" => (ARROW(yypos, yypos));
+":" => (COLON(yypos, yypos));
 
 . =>(error("\n***Lexer erro: bad character *** \n"); raise Fail ("Lexer erro: bad character" ^ yytext));

@@ -83,16 +83,12 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "else" => (ELSE(yypos, yypos));
 "if" => (IF(yypos, yypos));
 "match" => (MATCH(yypos, yypos));
-"hd" => (HD(yypos, yypos));
-"tl" => (TL(yypos, yypos));
 "ise" => (ISE(yypos, yypos));
 "print" => (PRINT(yypos, yypos));
 "[" => (LBRACK(yypos, yypos));
 "]" => (RBRACK(yypos, yypos));
 
 "end" => (END(yypos,yypos));
-"var" => (VAR(yypos, yypos));
-"rec" => (REC(yypos, yypos));
 
 "," => (COMMA(yypos, yypos));
 "{" => (LBRACE(yypos, yypos));

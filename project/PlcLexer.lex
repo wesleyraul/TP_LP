@@ -11,7 +11,7 @@ type lexresult = (slvalue, pos)token
 fun keyword (s, lpos, rpos) =
     case s of
         "var" => VAR(lpos,rpos)
-        | "bool" => BOOL(lpos,rpos)
+        | "Bool" => BOOL(lpos,rpos)
         | "else" => ELSE (lpos,rpos)
         | "end" => END(lpos,rpos)
         | "false" => FALSE(lpos,rpos)
@@ -19,10 +19,10 @@ fun keyword (s, lpos, rpos) =
         | "fun" => FUN(lpos,rpos)
         | "hd" => HD(lpos,rpos)
         | "if" => IF(lpos,rpos)
-        | "int" => INT(lpos,rpos)
+        | "Int" => INT(lpos,rpos)
         | "ise" => ISE(lpos,rpos)
         | "match" => MATCH(lpos,rpos)
-        | "nil" => NIL(lpos,rpos)
+        | "Nil" => NIL(lpos,rpos)
         | "print" => PRINT(lpos,rpos)
         | "rec" => REC(lpos,rpos)
         | "then" => THEN(lpos,rpos)
@@ -100,12 +100,14 @@ identifier = [a-zA-Z_][a-zA-Z_0-9]*;
 "("=> (LPAR(yypos, yypos));
 ")" => (RPAR(yypos, yypos));
 "fn" => (FN(yypos, yypos));
+"|" => (BAR(yypos, yypos));
+"_" => (UNDER(yypos, yypos));
 
 
 
 "true" => (TRUE(yypos, yypos));
 "false" => (FALSE(yypos, yypos));
-"eqarrow" => (EQARROW(yypos, yypos));
-
+"=>" => (EQARROW(yypos, yypos));
+"->" => (ARROW(yypos, yypos));
 
 . =>(error("\n***Lexer erro: bad character *** \n"); raise Fail ("Lexer erro: bad character" ^ yytext));

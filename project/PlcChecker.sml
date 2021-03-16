@@ -14,11 +14,8 @@ exception NotFunc
 exception ListOutOfRange
 exception OpNonList
 
-use "Environ.sml";
-use "Absyn.sml";
-
 fun isSeqType (SeqT t: plcType) = true
-      | isSeqType _ = false;
+  | isSeqType _ = false;
 
 fun isEqType IntT = true
       | isEqType BoolT = true
@@ -79,15 +76,17 @@ fun teval (e:expr) (p:plcType env): plcType =
         in
           if t <> BoolT then raise IfCondNotBool else if t1 = t2 then t1 else raise DiffBrTypes
         end
-    | Match(e, []) => raise NoMatchResults (*ERRO*) (* 13 *)
-    | Match(e, ((ei, ri)::t)) => IntT
-        (* let
-          val te = teval e p
-          val tei = teval (getOpt (ei, List [])) p
-          val tri = teval ri p
+    | Match(e, l) => (* 13 *)
+        let
+          val list = map (fn (x,y) => ((teval (getOpt(x, (List []))) p), (teval y p))) l
+          fun aux [] p = raise NoMatchResults
+            | aux ((ei, ri)::[]) p =
+              if ei = (ListT []) then ri else if ei = teval e p then ri else raise MatchCondTypesDiff
+            | aux ((ei, ri)::(en, rn)::t) p =
+              if ei <> teval e p then raise MatchCondTypesDiff else if ri = rn then aux ((en, rn)::t) p else raise MatchResTypeDiff
         in
-          if tei <> ListT [] andalso te = tei andalso tri 
-        end *)
+          aux list p
+        end
     | Prim1("!", e) => if teval e p = BoolT then BoolT else raise UnknownType (* 14 *)
     | Prim1("-", e) => if teval e p = IntT then IntT else raise UnknownType (* 15 *)
     | Prim1("hd", e) => (* 16 *)
@@ -191,6 +190,7 @@ fun teval (e:expr) (p:plcType env): plcType =
     | Item (i, List []) => raise ListOutOfRange (* 25 *)
     | Item (0, List (h::t)) => teval h p
     | Item (i, List (h::t)) => teval (Item (i-1, (List t))) p
+    | Item (_, _) => raise OpNonList
     | Prim2 (";", e1, e2) => (* 26 *)
         let
           val t1 = teval e1 p

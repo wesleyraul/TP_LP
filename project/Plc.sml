@@ -2,16 +2,16 @@
 
 fun run e =
     let
-      val tipo = type2string(teval(e))
-      val valor = val2string(eval(e))
+      val tipo = type2string(teval e [])
+      val valor = val2string(eval e [])
     in
-      valor^":"^tipo
+      valor^" : "^tipo
     end
     handle 
         (* Exceções PLC Checker*)
           EmptySeq => "A sequência inserida não contém elementos."
         | UnknownType => "Algum dos operadores inseridos possui tipo inválido para operação."
-        | NotEqTypes => "Algum dos operadores inseridos não está definido para igualdade."
+        | NotEqTypes => "As expressões devem possuir o mesmo tipo."
         | WrongRetType => "O tipo de retorno da função não é o mesmo da expressão associada à ela."
         | DiffBrTypes => "Os valores das expressoes THEN e ELSE possuem tipos diferentes."
         | IfCondNotBool => "A condição inserida em IF não é booleana."

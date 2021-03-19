@@ -24,7 +24,7 @@ fun isEqType IntT = true
       | isEqType (ListT (h::t)) = if isEqType h then isEqType (ListT t) else false
       | isEqType (SeqT (t)) = isEqType t
       | isEqType _ = false;
-
+      
 fun teval (e:expr) (p:plcType env): plcType =
   case e of
       (Var x) => lookup p x (* 1 *)
@@ -78,14 +78,13 @@ fun teval (e:expr) (p:plcType env): plcType =
         end
     | Match(e, l) => (* 13 *)
         let
-          val list = map (fn (x,y) => ((teval (getOpt(x, (List []))) p), (teval y p))) l
           fun aux [] p = raise NoMatchResults
-            | aux ((ei, ri)::[]) p =
-              if ei = (ListT []) then ri else if ei = teval e p then ri else raise MatchCondTypesDiff
-            | aux ((ei, ri)::(en, rn)::t) p =
-              if ei <> teval e p then raise MatchCondTypesDiff else if ri = rn then aux ((en, rn)::t) p else raise MatchResTypeDiff
+            | aux ((NONE, ri)::[]) p = teval ri p
+            | aux ((SOME ei, ri)::[]) p = if teval ei p = teval e p then teval ri p else raise MatchCondTypesDiff
+            | aux ((NONE, ri)::(en, rn)::t) p = if teval ri p = teval rn p then aux ((en, rn)::t) p else raise MatchResTypeDiff
+            | aux ((SOME ei, ri)::(en, rn)::t) p = if teval ei p <> teval e p then raise MatchCondTypesDiff else if teval ri p = teval rn p then aux ((en, rn)::t) p else raise MatchResTypeDiff
         in
-          aux list p
+          aux l p
         end
     | Prim1("!", e) => if teval e p = BoolT then BoolT else raise UnknownType (* 14 *)
     | Prim1("-", e) => if teval e p = IntT then IntT else raise UnknownType (* 15 *)
@@ -129,7 +128,7 @@ fun teval (e:expr) (p:plcType env): plcType =
           val t1 = teval e1 p
           val t2 = teval e2 p
         in
-          if isSeqType t2 andalso t1 = (aux t2) then t2 else raise UnknownType
+          if t1 = (aux t2) then t2 else raise NotEqTypes
         end
     | Prim2("+", e1, e2) => (* 22 *)
         let

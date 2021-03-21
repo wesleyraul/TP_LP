@@ -5,7 +5,7 @@ fun run e =
       val tipo = type2string(teval e [])
       val valor = val2string(eval e [])
     in
-      valor^" : "^tipo
+      valor^":"^tipo
     end
     handle 
         (* Exceções PLC Checker*)
@@ -24,11 +24,11 @@ fun run e =
         | OpNonList => "O valor inserido deve ser uma lista para que possa acessar um elemento."
 
         (* Exceções PLC Interpreter*)
-        | Impossible => "Exception Message"
-        | HDEmptySeq => "Exception Message"
-        | TLEmptySeq => "Exception Message"
-        | ValueNotFoundInMatch => "Exception Message"
-        | NotAFunc => "Exception Message"
+        | Impossible => "Não foi possível avaliar esta expressão."
+        | HDEmptySeq => "A sequência deve conter elementos para que hd seja utilizada."
+        | TLEmptySeq => "A sequência deve conter elementos para que tl seja utilizada."
+        | ValueNotFoundInMatch => "Não foi possível fazer o match para a expressão inserida."
+        | NotAFunc => "A expressão inserida não é uma função."
         
         (* Exceções Environ*)
         | SymbolNotFound => "Variável não está definida.";

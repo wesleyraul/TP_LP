@@ -24,6 +24,9 @@ fun isEqualityType IntT = true
       | isEqualityType (ListT (h::t)) = if isEqualityType h then isEqualityType (ListT t) else false
       | isEqualityType (SeqT (t)) = isEqualityType t
       | isEqualityType _ = false;
+
+fun isListType List l = true
+  | isListType _ = false;
       
 fun teval (e:expr) (p:plcType env): plcType =
   case e of

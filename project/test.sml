@@ -65,3 +65,6 @@ run e15;
 
 val e16 = fromString "var n = 1; if n <= 0 then 0 else n";
 run e16;
+
+val e17 = fromString ("fun add (Int x, Int y) = x + y; add(1, 2)");
+run e17;

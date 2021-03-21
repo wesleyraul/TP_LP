@@ -36,7 +36,7 @@ fun eval (e:expr) (p:plcVal env): plcVal =
     | (Prim1 ("hd", e)) => let val v = eval e p in if val2list v = [] then raise HDEmptySeq else (hd (val2list v)) end
     | (Prim1 ("tl", e)) => let val v = eval e p in if val2list v = [] then raise TLEmptySeq else (SeqV (tl (val2list v))) end
     | (Prim1 ("ise", e)) => let val v = eval e p in if val2list v = [] then (BoolV true) else (BoolV false) end
-    | (Prim1 ("print", e)) => let val v = print(val2string (eval e p)) in ListV [] end
+    | (Prim1 ("print", e)) => let val v = val2string (eval e p) in print(v^"\n"); ListV [] end
 
     | (Prim2 ("&&", e1, e2)) => let val v1 = eval e1 p; val v2 = eval e2 p in BoolV (val2bool v1 andalso val2bool v2) end
     | (Prim2 ("+", e1, e2)) => let val v1 = eval e1 p; val v2 = eval e2 p in IntV (val2int v1 + val2int v2) end

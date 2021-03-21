@@ -25,7 +25,7 @@ fun isEqualityType IntT = true
       | isEqualityType (SeqT (t)) = isEqualityType t
       | isEqualityType _ = false;
 
-fun isListType (List l) = true
+fun isListType (ListT l) = true
   | isListType _ = false;
       
 fun teval (e:expr) (p:plcType env): plcType =

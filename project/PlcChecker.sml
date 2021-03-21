@@ -17,13 +17,13 @@ exception OpNonList
 fun isSeqType (SeqT t: plcType) = true
   | isSeqType _ = false;
 
-fun isEqType IntT = true
-      | isEqType BoolT = true
-      | isEqType (ListT []) = true
-      | isEqType (ListT (h::[])) = isEqType h
-      | isEqType (ListT (h::t)) = if isEqType h then isEqType (ListT t) else false
-      | isEqType (SeqT (t)) = isEqType t
-      | isEqType _ = false;
+fun isEqualityType IntT = true
+      | isEqualityType BoolT = true
+      | isEqualityType (ListT []) = true
+      | isEqualityType (ListT (h::[])) = isEqualityType h
+      | isEqualityType (ListT (h::t)) = if isEqualityType h then isEqualityType (ListT t) else false
+      | isEqualityType (SeqT (t)) = isEqualityType t
+      | isEqualityType _ = false;
       
 fun teval (e:expr) (p:plcType env): plcType =
   case e of
@@ -177,17 +177,17 @@ fun teval (e:expr) (p:plcType env): plcType =
           val te1 = teval e1 p
           val te2 = teval e2 p
         in
-          if not (isEqType te1) orelse not (isEqType te2) then raise NotEqTypes else if te1 = te2 then BoolT else raise UnknownType
+          if not (isEqualityType te1) orelse not (isEqualityType te2) then raise UnknownType else if te1 = te2 then BoolT else raise NotEqTypes
         end
     | Prim2("!=", e1, e2) => (* 24 *)
         let
           val te1 = teval e1 p
           val te2 = teval e2 p
         in
-          if not (isEqType te1) orelse not (isEqType te2) then raise NotEqTypes else if te1 = te2 then BoolT else raise UnknownType
+          if not (isEqualityType te1) orelse not (isEqualityType te2) then raise UnknownType else if te1 = te2 then BoolT else raise NotEqTypes
         end
     | Item (i, List []) => raise ListOutOfRange (* 25 *)
-    | Item (0, List (h::t)) => teval h p
+    | Item (1, List (h::t)) => teval h p
     | Item (i, List (h::t)) => teval (Item (i-1, (List t))) p
     | Item (_, _) => raise OpNonList
     | Prim2 (";", e1, e2) => (* 26 *)

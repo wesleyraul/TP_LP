@@ -90,6 +90,15 @@ fun eval (e:expr) (p:plcVal env): plcVal =
 
     | (Item (1, List (h::t))) => eval h p
     | (Item (i, List (h::t))) => eval (Item (i-1, List t)) p
+    | (Item (i, e)) =>
+        let 
+          val v = eval e p
+          fun aux 1 (ListV (h::t)) = h
+            | aux i (ListV (h::t)) = aux (i-1) (ListV t)
+            | aux i _ = raise Impossible
+        in 
+          aux i v 
+        end
 
     | (Anon ((t:plcType), (x:string), (e: expr))) => Clos ("", x, e, p)
 

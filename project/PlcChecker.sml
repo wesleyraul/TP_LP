@@ -192,7 +192,15 @@ fun teval (e:expr) (p:plcType env): plcType =
     | Item (i, List []) => raise ListOutOfRange (* 25 *)
     | Item (1, List (h::t)) => teval h p
     | Item (i, List (h::t)) => teval (Item (i-1, (List t))) p
-    | Item (i, e) => let val t = teval e p in if isListType t then t else raise OpNonList end
+    | Item (i, e) => 
+        let 
+          val t = teval e p
+          fun aux i (ListT []) = raise ListOutOfRange
+            | aux 1 (ListT (h::t)) = h
+            | aux i (ListT (h::t)) = aux (i-1) (ListT t)
+        in 
+          if isListType t then aux i t else raise OpNonList 
+        end
     | Prim2 (";", e1, e2) => (* 26 *)
         let
           val t1 = teval e1 p
